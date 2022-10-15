@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         tag: [bullseye, latest]
-        platform: [linux/amd64, linux/arm64]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -30,11 +29,11 @@ jobs:
           username: nggit
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push nggit/debian-jwm:${{ matrix.tag }} (${{ matrix.platform }})
+      - name: Build and push nggit/debian-jwm:${{ matrix.tag }}
         uses: docker/build-push-action@v3
         with:
           context: .
           file: debian-jwm/Dockerfile
           push: true
           tags: nggit/debian-jwm:${{ matrix.tag }}
-          platforms: ${{ matrix.platform }}
+          platforms: [linux/amd64, linux/arm64]
