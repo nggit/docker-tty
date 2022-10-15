@@ -36,4 +36,4 @@ jobs:
           file: debian-jwm/Dockerfile
           push: true
           tags: nggit/debian-jwm:${{ matrix.tag }}
-          platforms: [linux/amd64, linux/arm64]
+          platforms: linux/amd64, linux/arm64
