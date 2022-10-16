@@ -12,7 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tag: [bullseye, latest]
+        include:
+          - name: sid
+            file: debian-jwm/sid/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-jwm:sid
+          - name: bullseye
+            file: debian-jwm/bullseye/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-jwm:bullseye, nggit/debian-jwm:latest
+          - name: buster
+            file: debian-jwm/buster/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-jwm:buster
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -29,11 +41,11 @@ jobs:
           username: nggit
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push nggit/debian-jwm:${{ matrix.tag }}
+      - name: Build and push nggit/debian-jwm:${{ matrix.name }}
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: debian-jwm/Dockerfile
+          file: ${{ matrix.file }}
           push: true
-          tags: nggit/debian-jwm:${{ matrix.tag }}
-          platforms: linux/amd64, linux/arm64
+          tags: ${{ matrix.tags }}
+          platforms: ${{ matrix.platforms }}
