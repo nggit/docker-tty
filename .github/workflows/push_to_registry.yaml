@@ -13,10 +13,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: sid
-            file: debian-jwm/sid/Dockerfile
-            platforms: linux/amd64, linux/arm64
-            tags: nggit/debian-jwm:sid
           - name: bullseye
             file: debian-jwm/bullseye/Dockerfile
             platforms: linux/amd64, linux/arm64
