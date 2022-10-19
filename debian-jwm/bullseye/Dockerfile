@@ -46,7 +46,6 @@ CMD ["sh", "-c", "test -d /dev/input && chown -R root:input /dev/input/*; \
         fi; \
         mount -o remount,ro /sys/fs/cgroup; \
         mount -o remount,ro /sys; \
-        mount --make-rshared /; \
     elif test -d /sys/fs/cgroup; then \
         echo \"INFO: I assume that you are running the container without --cap-add SYS_ADMIN: $msg\"; \
     fi; \
