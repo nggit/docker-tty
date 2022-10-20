@@ -6,8 +6,8 @@ VOLUME ["/sys/fs/cgroup", "/run", "/run/lock"]
 
 # update system & install packages
 RUN apt-get update && apt-get -y upgrade; \
-    DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install systemd-sysv jwm xinit xserver-xorg dbus-x11 policykit-1-gnome \
-    locales libxml2-utils sudo nano vim-tiny less alsa-utils pciutils usbutils procps psmisc net-tools iproute2 iputils-ping wget curl htop
+    DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install systemd-sysv mate-desktop-environment xinit xserver-xorg \
+    locales sudo nano vim-tiny less alsa-utils pciutils usbutils procps psmisc net-tools iproute2 iputils-ping wget curl htop
 
 # clean up
 RUN apt-get clean; \
@@ -21,11 +21,8 @@ RUN sed -i 's/^#*ForwardToConsole=[a-z]*/ForwardToConsole=yes/' /etc/systemd/jou
     sed -i 's/^#*ReadKMsg=[a-z]*/ReadKMsg=no/' /etc/systemd/journald.conf; \
     systemctl enable getty@tty10.service; \
     systemctl disable getty@tty1.service; \
-    echo "dbus-launch --sh-syntax --exit-with-session jwm" | tee /etc/skel/.xinitrc /root/.xinitrc; \
-    echo "\nif [ \"\$( tty )\" = /dev/tty10 ]; then exec startx; else true; fi" | tee -a /etc/skel/.profile /root/.profile; \
-    echo "<?xml version=\"1.0\"?><JWM><Include>/etc/jwm/system.jwmrc</Include> \
-        <StartupCommand>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1</StartupCommand> \
-        </JWM>" | xmllint --format - | tee /etc/skel/.jwmrc /root/.jwmrc
+    echo "dbus-launch --sh-syntax --exit-with-session mate-session" | tee /etc/skel/.xinitrc /root/.xinitrc; \
+    echo "\nif [ \"\$( tty )\" = /dev/tty10 ]; then exec startx; else true; fi" | tee -a /etc/skel/.profile /root/.profile
 
 # allow systemd (and other programs) to identify that it is executed within a container
 # https://systemd.io/CONTAINER_INTERFACE/

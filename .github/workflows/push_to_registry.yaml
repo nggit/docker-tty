@@ -13,11 +13,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: bullseye
+          - name: debian-mate:bullseye
+            file: debian-mate/bullseye/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-mate:bullseye, nggit/debian-mate:latest
+          - name: debian-mate:buster
+            file: debian-mate/buster/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-mate:buster
+          - name: debian-jwm:bullseye
             file: debian-jwm/bullseye/Dockerfile
             platforms: linux/amd64, linux/arm64
             tags: nggit/debian-jwm:bullseye, nggit/debian-jwm:latest
-          - name: buster
+          - name: debian-jwm:buster
             file: debian-jwm/buster/Dockerfile
             platforms: linux/amd64, linux/arm64
             tags: nggit/debian-jwm:buster
@@ -37,7 +45,7 @@ jobs:
           username: nggit
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push nggit/debian-jwm:${{ matrix.name }}
+      - name: Build and push nggit/${{ matrix.name }}
         uses: docker/build-push-action@v3
         with:
           context: .
