@@ -6,7 +6,7 @@ VOLUME ["/sys/fs/cgroup", "/run", "/run/lock"]
 
 # update system & install packages
 RUN apt-get update && apt-get -y upgrade; \
-    DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install systemd-sysv jwm xinit xserver-xorg dbus-x11 policykit-1-gnome \
+    DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install systemd-sysv jwm menu xinit xserver-xorg dbus-x11 policykit-1-gnome \
     locales libxml2-utils sudo nano vim-tiny less alsa-utils pciutils usbutils procps psmisc net-tools iproute2 iputils-ping wget curl htop
 
 # clean up
