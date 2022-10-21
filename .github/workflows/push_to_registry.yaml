@@ -33,19 +33,26 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: List modified files
+        run: echo "FILES_MODIFIED=\"$( git diff --name-only HEAD HEAD^ )\"" >> $GITHUB_ENV
+
       - name: Set up QEMU
+        if: ${{ contains(env.FILES_MODIFIED, '/Dockerfile') || github.event_name == 'schedule' }}
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        if: ${{ contains(env.FILES_MODIFIED, '/Dockerfile') || github.event_name == 'schedule' }}
         uses: docker/setup-buildx-action@v2
 
       - name: Log in to Docker Hub
+        if: ${{ contains(env.FILES_MODIFIED, '/Dockerfile') || github.event_name == 'schedule' }}
         uses: docker/login-action@v2
         with:
           username: nggit
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push nggit/${{ matrix.name }}
+        if: ${{ contains(env.FILES_MODIFIED, matrix.file) || github.event_name == 'schedule' }}
         uses: docker/build-push-action@v3
         with:
           context: .
