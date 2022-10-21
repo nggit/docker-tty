@@ -50,7 +50,7 @@ docker exec -it debian_mate passwd
 ```
 **4. Login**
 
-You can login JWM in `tty10` (**Ctrl-Alt-F10**).
+You can login MATE in `tty10` (**Ctrl-Alt-F10**).
 
 or console mode
 ```
