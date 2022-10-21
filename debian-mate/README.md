@@ -1,5 +1,5 @@
 # debian-mate
-Debian image with MATE Desktop Environment. The display will be on `tty10` (***Ctrl-Alt-F10***), coexisting with the host.
+Debian image with MATE Desktop Environment. The display will be on `tty10` (***Ctrl-Alt-F10***), coexist with the host.
 
 ## Requirements
 Make sure `tty10` is empty / not in use. Check with **Ctrl-Alt-F10**, make sure you don't see getty's *login prompt* there.
