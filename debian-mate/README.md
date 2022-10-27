@@ -56,7 +56,7 @@ or console mode
 ```
 docker attach debian_mate
 ```
-Press *Enter* or *Ctrl-C* if the login prompt has not appeared / closed log.
+Press *Enter* or *Ctrl-C* if the login prompt has not appeared / blocked by the logs.
 
 Done. For emergency you can enter using:
 ```
