@@ -36,7 +36,7 @@ jobs:
           fetch-depth: 2
 
       - name: List modified files
-        run: echo "FILES_MODIFIED=\"$( git diff --name-only HEAD HEAD^ )\"" >> $GITHUB_ENV
+        run: echo "FILES_MODIFIED=$( git diff --name-only HEAD HEAD^ )" >> $GITHUB_ENV
 
       - name: Set up QEMU
         if: ${{ contains(env.FILES_MODIFIED, '/Dockerfile') || github.event_name == 'schedule' }}
