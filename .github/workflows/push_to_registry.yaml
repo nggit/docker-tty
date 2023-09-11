@@ -5,6 +5,7 @@ on:
     branches: '**'
   schedule:
     - cron: '0 0 * * 0'
+  workflow_dispatch:
 
 jobs:
   push_to_registry:
@@ -13,18 +14,26 @@ jobs:
     strategy:
       matrix:
         include:
+          - name: debian-mate:bookworm
+            file: debian-mate/bookworm/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-mate:bookworm, nggit/debian-mate:latest
           - name: debian-mate:bullseye
             file: debian-mate/bullseye/Dockerfile
             platforms: linux/amd64, linux/arm64
-            tags: nggit/debian-mate:bullseye, nggit/debian-mate:latest
+            tags: nggit/debian-mate:bullseye
           - name: debian-mate:buster
             file: debian-mate/buster/Dockerfile
             platforms: linux/amd64, linux/arm64
             tags: nggit/debian-mate:buster
+          - name: debian-jwm:bookworm
+            file: debian-jwm/bookworm/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            tags: nggit/debian-jwm:bookworm, nggit/debian-jwm:latest
           - name: debian-jwm:bullseye
             file: debian-jwm/bullseye/Dockerfile
             platforms: linux/amd64, linux/arm64
-            tags: nggit/debian-jwm:bullseye, nggit/debian-jwm:latest
+            tags: nggit/debian-jwm:bullseye
           - name: debian-jwm:buster
             file: debian-jwm/buster/Dockerfile
             platforms: linux/amd64, linux/arm64

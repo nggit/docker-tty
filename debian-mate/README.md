@@ -18,7 +18,7 @@ docker create -it --name debian_mate \
     --device /dev/dri --device /dev/fb0 --device /dev/video0 --device /dev/vga_arbiter \
     -v /run/udev/control:/run/udev/control:ro -v /run/udev/data:/run/udev/data:ro \
     -v /etc/localtime:/etc/localtime:ro \
-    nggit/debian-mate:bullseye
+    nggit/debian-mate:bookworm
 ```
 At this point, you can add other volume bindings if you want to share data between the host and the container, using the ` -v` or ` -volume` flags. Because partitions like **/dev/sda1**, etc. are by default not exposed to containers for security reasons.
 
@@ -28,7 +28,7 @@ docker create -it --name debian_mate \
     --privileged --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
     -v /run/udev/control:/run/udev/control:ro -v /run/udev/data:/run/udev/data:ro \
     -v /etc/localtime:/etc/localtime:ro \
-    nggit/debian-mate:bullseye
+    nggit/debian-mate:bookworm
 ```
 
 **2. Run the container and check the logs**
@@ -38,7 +38,7 @@ docker logs debian_mate
 ```
 You should see a line like the following at the end of the logs if the container is running properly:
 ```
-Debian GNU/Linux 11 246eb7415c97 console
+Debian GNU/Linux 12 246eb7415c97 console
 ```
 If you want to make the container always run automatically even if the host is restarted, you can change the restart policy on the container to *always* or *unless-stopped*:
 ```
