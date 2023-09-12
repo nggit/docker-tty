@@ -10,22 +10,24 @@ It usually doesn't matter because most distros only use 1 - 6, and 7 for display
 **1. Installation (creating a container)**
 ```
 docker create -it --name debian_mate \
+    --privileged --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+    -v /run/udev/control:/run/udev/control:ro -v /run/udev/data:/run/udev/data:ro \
+    -v /etc/localtime:/etc/localtime:ro \
+    nggit/debian-mate:bookworm
+```
+
+That should be fine in most cases.
+
+If you are an advanced user, you might want to fine-tune the security to avoid the `--privileged` flag on container creation.
+But this may require some patience to match the device. For example device `/dev/video0` could be `/dev/video10` on another device, availability of `/dev/psaux` etc.
+```
+docker create -it --name debian_mate \
     --cap-add SYS_ADMIN --cap-add SYS_TTY_CONFIG --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
     --device /dev/tty --device /dev/tty0 --device /dev/tty7 --device /dev/tty10 \
     --device /dev/input --device /dev/psaux \
     --device /dev/bus/usb --device /dev/usb \
     --device /dev/snd \
     --device /dev/dri --device /dev/fb0 --device /dev/video0 --device /dev/vga_arbiter \
-    -v /run/udev/control:/run/udev/control:ro -v /run/udev/data:/run/udev/data:ro \
-    -v /etc/localtime:/etc/localtime:ro \
-    nggit/debian-mate:bookworm
-```
-At this point, you can add other volume bindings if you want to share data between the host and the container, using the ` -v` or ` -volume` flags. Because partitions like **/dev/sda1**, etc. are by default not exposed to containers for security reasons.
-
-If the container cannot be created in the above way, for example there is a different device path on your device, you can customize it yourself. Or more simply use *privileged* mode to access all devices. But this also means ignoring the security aspect.
-```
-docker create -it --name debian_mate \
-    --privileged --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
     -v /run/udev/control:/run/udev/control:ro -v /run/udev/data:/run/udev/data:ro \
     -v /etc/localtime:/etc/localtime:ro \
     nggit/debian-mate:bookworm
@@ -40,6 +42,9 @@ You should see a line like the following at the end of the logs if the container
 ```
 Debian GNU/Linux 12 246eb7415c97 console
 ```
+
+If not, try [deleting it](#stopping-and-deleting-the-container) then re-create the container.
+
 If you want to make the container always run automatically even if the host is restarted, you can change the restart policy on the container to *always* or *unless-stopped*:
 ```
 docker update --restart unless-stopped debian_mate
@@ -83,6 +88,7 @@ Display Managers like lightdm default to `tty7`, and when first running will dis
 
 The main problem is `tty7`. Make sure your host is not using lightdm on that `tty7` as well.
 ## Stopping and deleting the container
+In the case you want to re-create the containers.
 ```
 docker stop debian_mate
 docker rm debian_mate
